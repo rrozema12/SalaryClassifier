@@ -13,6 +13,5 @@ down significantly in my cleaning step. I will be attempting to guess
 whether a shot is made or not based on all of the attributes that 
 I previously listed. 
  
-## Source
-I got this dataset from the following link: 
-https://www.kaggle.com/dansbecker/nba-shot-logs
+## Sources
+The dataset is from: https://www.kaggle.com/dansbecker/nba-shot-logs
