@@ -23,7 +23,7 @@ This is a log of each step I took to complete the final project.
 ##Classifiers
 
 
-###KNN
+###K-Nearest Neighbors
 
 
 ###Naive Bayes
