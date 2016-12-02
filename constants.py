@@ -14,7 +14,3 @@ INCOME_HEADERS = [
     'age', 'job-type', 'degree', 'marital-status', 'ethnicity',
     'gender', 'country', 'wage'
 ]
-
-TITANIC_HEADERS = [
-    'class', 'age', 'sex', 'survived'
-]
