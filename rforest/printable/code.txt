@@ -1,0 +1,576 @@
+### hw5.py
+
+import table_utils
+import file_system
+import homework_util as homework
+from constants import INDICES
+from constants import TITANIC_HEADERS
+from constants import AUTO_HEADERS
+import output_util as output
+import decision_tree
+from util import these, flipKeyValues
+from functools import partial
+from classifier_util import accuracy
+
+
+def map_to_ints_titanic(table):
+    """ Maps the data_set to integer values
+
+    :param table: titanic dataset
+    :return: returns the mapped dataset
+    """
+    table = table_utils.mapCol(table, INDICES['class'],
+                               homework.get_class_value)
+    table = table_utils.mapCol(table, INDICES['age'],
+                               homework.get_age_value)
+    table = table_utils.mapCol(table, INDICES['sex'],
+                               homework.get_sex_value)
+    table = table_utils.mapCol(table, INDICES['survived'],
+                               homework.get_survived_value)
+
+    return table
+
+def map_auto_cols(table):
+    mpg_index = INDICES['mpg']
+    table = table_utils.mapCol(table, mpg_index, homework.getDeptEnergyRating)
+    weight_index = INDICES['weight']
+    table = table_utils.mapCol(table, weight_index, homework.getNHTSASize)
+
+    return table
+
+
+def step_one(table):
+    """ Decision Tree vs. Knn (k=10) for titanic data_set
+
+    :param: titanic dataset
+    :return: the decision tree
+    """
+
+    output.printHeader('Step One: Create a Decision Tree (Titanic)')
+
+    attributes = these(INDICES, 'class', 'age', 'sex')
+    domains = table_utils.get_domains(table, attributes)
+    tree = decision_tree.tdidt(table, attributes, domains, INDICES['survived'])
+
+    decision_tree.print_rules(tree, ['class', 'age', 'sex', 'survived'],
+                              'survived')
+
+    attributes = these(INDICES, 'class', 'age', 'sex')
+
+    # Creates a myClassifier function that's paritally filled out
+    # From decision_tree.classify
+    # Essentially a new function:
+    # myClassifier(training, test, class_index)
+    myClassifier = partial(decision_tree.classify, att_indexes=attributes, att_domains=domains)
+
+    labels = homework.stratified_cross_fold(table, 10, INDICES['survived'],
+       myClassifier)
+
+    acc = accuracy(labels)
+    print('\n')
+    print('Stratified CrossFolding')
+    print('\tAccuracy = ' + str(acc) + ', error rate = ' + str(1 - acc))
+    print('\n')
+
+    # Confusion Matrix
+    homework.print_confusion_matrix(labels, 'Survived')
+
+
+def step_two(table):
+    """ Decision Tree vs. Knn (k=10) for auto data_set
+
+    :param: titanic dataset
+    :return: the decision tree
+    """
+    output.printHeader('Step Two: Create a Decision Tree (Auto)')
+
+
+    # Discretize Weight
+    mpg_index = INDICES['mpg']
+    table = table_utils.mapCol(table, mpg_index, homework.getDeptEnergyRating)
+    weight_index = INDICES['weight']
+    table = table_utils.mapCol(table, weight_index, homework.getNHTSASize)
+
+    # Print tree
+    attributes = these(INDICES, 'weight', 'cylinders', 'year')
+    domains = table_utils.get_domains(table, attributes)
+    tree = decision_tree.tdidt(table, attributes, domains, INDICES['mpg'])
+    decision_tree.print_rules(tree, AUTO_HEADERS, 'mpg')
+
+    attributes = these(INDICES, 'cylinders', 'weight', 'year')
+
+    # Creates a myClassifier function that's paritally filled out
+    # From decision_tree.classify
+    # Essentially a new function:
+    # myClassifier(training, test, class_index)
+    myClassifier = partial(decision_tree.classify, att_indexes=attributes, att_domains=domains)
+
+    labels = homework.stratified_cross_fold(table, 10, INDICES['mpg'],
+       myClassifier)
+
+    acc = accuracy(labels)
+    print('\n')
+    print('Stratified CrossFolding')
+    print('\tAccuracy = ' + str(acc) + ', error rate = ' + str(1 - acc))
+    print('\n')
+
+    # Confusion Matrix
+    labels = [(index, int(value)) for index, value in labels] #converts to ints
+    homework.print_confusion_matrix(labels, 'Mpg')
+
+
+def main():
+    table = file_system.loadTable('titanic.txt')
+    titanic_tree = step_one(table)
+
+    table = file_system.loadTable('auto-data-removedNA.csv')
+    step_two(table)
+
+
+if __name__ == "__main__":
+    main()
+
+
+### decision_tree.py
+
+import table_utils
+from util import these, appendToDict
+import math
+
+# Key words
+ATTRIBUTE = 'Attribute'
+VALUE = 'Value'
+LEAVES = 'Leaves'
+
+def classify(training, test, class_index, att_indexes, att_domains):
+    indexes = att_indexes[:]
+    tree = tdidt(training, indexes, att_domains, class_index)
+
+    return [(row[class_index], get_label(tree, row)) for row in test]
+
+
+def get_label(decision_tree, instance):
+    """  predicts the label of the given instance from the decision tree
+
+    :param decision_tree: the decision tree to make the prediction from
+    :param instance: a row to predict the class_label of
+    :return: the predicted label for the instance
+    """
+    if decision_tree[0] == 'Leaves':
+        # get the predicted class value
+        return _majority_voting(decision_tree)
+    elif decision_tree[0] == 'Attribute':
+        # otherwise we check an attribute
+        instance_value = instance[decision_tree[1]]
+        for i in range(2, len(decision_tree)):
+            if instance_value == decision_tree[i][1]:
+                return get_label(decision_tree[i][2], instance)
+    else:
+        # something is wrong with the tree
+        print 'Failed label on ' + instance
+        return -1
+
+
+def _majority_voting(leaves):
+    """ Given leaf nodes it will return the most probable class_label
+
+    :param leaves: leaf nodes
+    :return: class label
+    """
+    highest_prob = None
+    highest_class_value = None
+    for i in range(1, len(leaves)):
+        if (highest_prob == None or
+                    highest_prob < leaves[i][3]):
+            highest_prob = leaves[i][3]
+            highest_class_value = leaves[i][0]
+    return highest_class_value
+
+
+def print_rules(tree, names, class_name='class'):
+    """ Prints the rules of the tree in the format of
+    IF att == val AND ... THEN class = label
+    IF att == val AND ... THEN class = label
+
+    :param tree: a decision tree in the format of the tdidt function
+    :param names: the names of the indexes
+    :param class_name: the names of the class_label
+    """
+    if tree[0] == 'Leaves':
+        _print_rules_helper(tree, '', names, class_name)
+    else:
+        current_name = names[tree[1]]
+        rule = 'IF ' + str(current_name) + ' == '
+        for i in range(2, len(tree)):
+            new_rule = rule
+            current_value = tree[i][1]
+            new_rule += str(current_value) + ' '
+            _print_rules_helper(tree[i][2], new_rule, names, class_name)
+
+
+def _print_rules_helper(tree, old_rule, names, class_name):
+    """ Prints the rules of the tree in the format of
+    IF att == val AND ... THEN class = label
+    IF att == val AND ... THEN class = label
+
+    :param tree: a decision tree in the format of the tdidt function
+    :param old_rule: the current base rule that the printer is on
+    :param names: the names of the indexes
+    :param class_name: the names of the class_label
+    """
+    if tree[0] == 'Leaves':
+        print old_rule + 'THEN ' + class_name + ' = ' + _majority_voting(tree)
+    else:
+        current_name = names[tree[1]]
+        rule = 'AND ' + str(current_name) + ' == '
+        for i in range(2, len(tree)):
+            new_rule = old_rule
+            new_rule += rule
+            current_value = tree[i][1]
+            new_rule += str(current_value) + ' '
+            _print_rules_helper(tree[i][2], new_rule, names, class_name)
+
+
+def tdidt(table, att_indexes, att_domains, class_index):
+    """ creates a decision tree for the table
+    tree format:
+    [`Attribute', `0',
+        [`Value', `1', [`Leaves', [`yes',20,20,100%]]]
+        [`Value', `2',
+            [`Attribute', `2',
+                [`Value', `fair',
+                    [`Leaves', [`yes',4,10,40%], [`no',6,10,60%]]]
+            ]
+        ]
+    ]
+
+    :param table: a table (assuming it is not empty
+    :param att_indexes: the attributes to be partitioned on
+    :param att_domains: the values of the corresponding att_domains (in a dict)
+    :param class_index: the index of the class_label
+    :return: the decision tree
+    """
+    # First check for if there should be a leaf node
+    stats = partition_stats(table, class_index)
+    # check to see if there is only one class label present
+    # or there are still attributes to partition on
+    if same_class(table, class_index) or att_indexes == []:
+        return create_leaf_node(stats)
+
+    # check to make sure all partitions have instances
+    index = select_best_partition_index(table, att_indexes, class_index)
+    partitions = partition_instances(table, index)
+    have_instances = True
+
+    if len(att_domains[index]) > len(partitions):
+        # this means that there wasn't a partition for one of the attribute values
+        return create_leaf_node(stats)
+
+    # Partition Recursion Time!
+    att_indexes.remove(index)
+
+    tree = ['Attribute', index]
+    for att_value, partition in partitions.items():
+        # For each partition will do recursive creation
+        subtree = ['Value', att_value]
+        subtree.append(tdidt(partition, att_indexes, att_domains,class_index))
+        tree.append(subtree)
+    return tree
+
+
+def create_leaf_node(stats):
+    """ Creates a leaf node
+
+    :param stats: stats on the partition
+    :return: a leaf node in the form ['Leaves', ['yes', 4, 10, 40%],...]
+    """
+    tree = ['Leaves']
+    for row in stats:
+        if (row[1] > 0):
+            tree.append(row)
+    return tree
+
+
+def same_class(instances, class_index):
+    """ Determines if all the instances have the same class label
+
+    :param instances: table
+    :param class_index: index of the class label
+    :return: True if all have same class label flase otherwise
+    """
+    label = instances[0][class_index]
+    for row in instances:
+        if row[class_index] != label:
+            return False
+    return True
+
+
+def partition_stats(instances, class_index):
+    """ Returns the stas of the class_labels in partition
+
+    :param instances: table
+    :param class_index: index of class_label
+    :return: list of stats ex:[['yes', 4, 10], ...]
+    """
+
+    # Count instances of class label
+    counts = {}
+    for row in instances:
+        class_value = row[class_index]
+        try:
+            counts[class_value] += 1
+        except KeyError:
+            counts[class_value] = 1
+
+    # Create stats from count dictionary
+    stats = []
+    total = len(instances)
+    for label, count in counts.iteritems():
+        stats.append([str(label), count, total, count / (total * 1.0)])
+
+    return stats
+
+
+def partition_instances(table, att_index):
+    """ partitions the table based on an attribute
+
+    :param table: a table
+    :param att_index: the index of attribute to be partitioned on
+    :return: dictionary {att_val1: part1, att_val2: part2, ...}
+    """
+    partitions = {}
+    for row in table:
+        att_value = row[att_index]
+        partitions = appendToDict(partitions, att_value, row)
+
+    return partitions
+
+
+def select_best_partition_index(instances, att_indexes, class_index):
+    """ determines the best attribute to partition on
+
+    :param instances: a table
+    :param att_indexes: the indexes of the attributes
+    :param class_index: the index of the class_label
+    :return: the index of the attribute to partition on
+    """
+    best_index = None
+    lowest_e_new = None
+
+    for index in att_indexes:
+        e_new = calc_e_new(instances, index, class_index)
+        if lowest_e_new == None or lowest_e_new > e_new:
+            lowest_e_new = e_new
+            best_index = index
+
+    return best_index
+
+
+def calc_e_new(instances, att_index, class_index):
+    """ calculates Enew for what partitioning on the instnace would give
+
+    :param instances: a table
+    :param att_index: index to calculate partition on
+    :param class_index: index of the class label
+    :return: Enew
+    """
+    # get the length of the partition
+    D = len(instances)
+    # calculate the partition stats for att_index (see below)
+    freqs = att_freqs(instances, att_index, class_index)
+    # find E_new from freqs (calc weighted avg)
+    E_new = 0
+    for att_val in freqs:
+        D_j = float(freqs[att_val][1])
+        probs = [(c / D_j) for (_, c) in freqs[att_val][0].items()]
+        # changed this to handle when p < 0 because log(anything less than 0)
+        # is undefined and will throw an error.
+        E_D_j = -sum([p * math.log(p, 2) for p in probs if p > 0])
+        E_new += (D_j / D) * E_D_j
+    return E_new
+
+
+def att_freqs(instances, att_index, class_index):
+    """ gives the stats the distribution of class_labels given an index
+
+    :param instances: a table
+    :param att_index: the index of the attribute to get class_label stats on
+    :param class_index: the index of the class_labels
+    :return: {att_val:[{class1: freq, class2: freq, ...}, total], ...}
+    """
+    # get unique list of attribute and class values
+    att_vals = list(set(table_utils.getCol(instances, att_index)))
+    class_vals = list(set(table_utils.getCol(instances, class_index)))
+    # initialize the result
+    result = {v: [{c: 0 for c in class_vals}, 0] for v in att_vals}
+    # build up the frequencies
+    for row in instances:
+        label = row[class_index]
+        att_val = row[att_index]
+        result[att_val][0][label] += 1
+        result[att_val][1] += 1
+    return result
+
+
+if __name__ == "__main__":
+    table = [[1,1],[1,1],[0,2],[0,2]]
+    print partition_stats(table, 1)
+
+
+### Homework_util.py
+
+import util
+import constants
+import table_utils
+from tabulate import tabulate
+
+def getDeptEnergyRating(x):
+    """ Returns the dept of energy number rating"""
+
+    # Gets the range values for the DOE rankings
+    keys     = util.getValues(constants.DOE_RATINGS)
+
+    # Gets the left-end of the range x belongs in
+    lowRange = util.getLowRange(keys, x)
+
+    # Flips the dictionary, so we can query by value
+    byValue  = util.flipKeyValues(constants.DOE_RATINGS)
+
+    return byValue[lowRange]
+
+
+def getNHTSASize(x):
+    """ Returns the NHTSA Vehicle size """
+
+    # Gets the range values for the DOE rankings
+    keys     = util.getValues(constants.NHTSA)
+
+    # Gets the left-end of the range x belongs in
+    lowRange = util.getLowRange(keys, x)
+
+    # Flips the dictionary, so we can query by value
+    byValue  = util.flipKeyValues(constants.NHTSA)
+
+    return byValue[lowRange]
+
+
+def convertRowIntoIndexValuePairs(row):
+    """ Converts [x, y, z, ...] into [(0, x), (1, y), (2, z)]
+    for use in the classifiers in their "where" statements
+    """
+    return [ (index, value) for index, value in enumerate(row)]
+
+
+def getNamedTuples(row, *names):
+    """ Gets a bunch of tuples by their name
+    Ex: getNamedColsFromRow(row, 'mpg', 'origin', 'weight')
+        might return [(0, 18.0), (4, 3504), (7, 1)]
+    WARNING: These don't necessarily return in any specific order.
+    """
+    tuples = []
+    namesIndexes = [constants.INDICES[name] for name in names]
+    for index, value in enumerate(row):
+        if index in namesIndexes:
+            tuples.append((index, value))
+    return tuples
+
+def stratified_cross_fold(table, k, class_index, classify, *opts):
+    """
+    Uses stratified crossfolding to predict labels
+    :param table: Table of data
+    :param k: Number of folds
+    :param class_index: the class's index
+    :param classify: a function to classify on
+    :param opts: anything else you'd like to pass into the classify
+    :return: labels in format list of tuples [(actual, predicted),...]
+    """
+
+    labels = []
+    folds = strat_folds(table, class_index, k)
+    for index in range(len(folds)):
+        test = folds[index]  # creates the test from one fold
+        training = []
+
+        # meshes the rest of the folds together to make the training set
+        for training_index in range(len(folds)):
+            if training_index != index:
+                training.extend(folds[training_index])
+
+        labels.extend(classify(training, test, class_index, *opts))
+    return labels
+
+def strat_folds(table, by_label_index, k):
+    """
+    Creates fold where each fold has the same distrubution of class labels as the origonal table
+
+    :param table: table of data
+    :param by_label_index: the class label index
+    :param k: the number of partitions to create
+    :return: a list of tables where each table is a folds, i.e.: [[P1],[P2],..., [Pnum]] where each P is a table
+    """
+    labels_to_rows = {}
+
+    # spreads the data out into a dictionary where the key is the class label and the data is a table consisting of
+    # rows with that class label {class_label:rows_with_class_label
+    for row in table:
+        label = row[by_label_index]
+        try:
+            labels_to_rows[label].append(row)
+        except KeyError:
+            labels_to_rows[label] = [row]
+
+    # creates folds by evenly distributing the rows of each class label to the number of partitions
+    folds = {}
+    index = 0
+    for key, table in labels_to_rows.iteritems():
+        for row in table:
+            try:
+                folds[index].append(row)
+            except KeyError:
+                folds[index] = [row]
+            index += 1
+            if index > k:
+                index = 0
+    return util.dictionaryToArray(folds)
+
+def print_confusion_matrix(labels, class_label_name):
+    """ Prints the confusion matrix of the given labels
+
+    :param labels: A list of tuples of class labels [(actual, predicted),...]
+    :param class_label_name: The name of the class label
+    """
+    class_labels = list(set(table_utils.getCol(labels, 0)))  # all the actual class labels
+    the_headers = [class_label_name]
+    the_headers.extend(class_labels)
+    the_headers.extend(['Total', 'Recognition (%)'])
+
+    # makes an table filled with zeros of #columns = len(the_headers) and #rows = len(class_labels)
+    confusion_matrix = [[0] * len(the_headers) for i in range(len(class_labels))]
+
+    # fills out the confusion matrix with the predicted vs. actual
+    for a_label_point in labels:
+        actual, predicted = a_label_point
+        confusion_matrix[class_labels.index(actual)][the_headers.index(predicted)] += 1
+
+    # add the rest of the values to the confusion matrix
+    for i in range(len(confusion_matrix)):
+        row = confusion_matrix[i]  # current row
+
+        # adding total to the confusion matrix
+        total = sum(row)
+        row[the_headers.index('Total')] = total  # add the total in for the row
+
+        row[0]= class_labels[i]  # adds the class label for the row to the beginning of row
+
+        # adding recognition to the confusion matrix (% of guesses in row that are correct
+        recognition = row[the_headers.index(class_labels[i])] # TP
+        recognition /= float(total)
+        recognition *= 100
+        row[the_headers.index('Recognition (%)')] = recognition
+
+    # prints the table
+    print tabulate(confusion_matrix, headers = the_headers, tablefmt="rst")
+
+if __name__ == '__main__':
+    row = [18.0,8,307.0,130.0,3504,12.0,70,1,"chevrolet chevelle malibu",2881]
+    print getNamedTuples(row, 'mpg', 'origin', 'weight')
