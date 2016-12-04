@@ -20,6 +20,9 @@ This is a log of each step I took to complete the final project.
    dataset.
  - I eliminated some attributes because I felt like they were not as important
    to the dataset.
+ - I ran into a problem where there were a lot of spces in my code.  This was
+   a very simple fix by deleting all the spaces by hand using excel with the
+   find and replace functionality.
 
 ##Data Visualization
 
