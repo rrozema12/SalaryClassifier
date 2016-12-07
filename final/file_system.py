@@ -14,6 +14,6 @@ def loadTable(filename):
 
 def write(table, filename):
     with open(filename, 'wb') as csvfile:
-        writer = csv.writer(csvfile , skipinitialspace=False, delimiter=',',quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
+        writer = csv.writer(csvfile , skipinitialspace=False, delimiter=',')
         for row in table:
             writer.writerow(row)

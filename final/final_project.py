@@ -1,6 +1,8 @@
+import csv
+import file_system
+import clean
 import naive_bayes as bayes
 import table_utils
-import file_system
 import homework_util as homework
 import constants
 import partition
@@ -10,30 +12,13 @@ import hw4_util
 import knn
 import util
 
-
-def _printExamples(table):
-    """ Prints 5 example instances """
-    test, training = partition.cut(table, 5)
-    for instance in test:
-        output.printInstance(instance)  # Print original instance
-
-        # Calculate the actual and bayes predicted
-        actual = instance[constants.INDICES['salary']]
-
-        # change the instance to the values we are testing from
-        instance = homework.getNamedTuples(instance, ['degree', 'ethnicity', 'gender'])
-        predicted, probability = bayes.predict_label(training, instance, constants.INDICES['salary'])
-
-        output.printClassActual(actual, predicted)  # Print results
-
-
 def _printConfusionMatrix(labels, name):
     """ Prints a confusion matrix for given labels """
     output.printHeader('Confusion Matrix')
     hw4_util.print_confusion_matrix(labels, name)
 
 
-def step_three(table):
+def knn_and_naive(table):
     """ Analyzes the table based on Knn and Naive Bayes
 
     :param table: the table of the titanic dataset
@@ -58,7 +43,7 @@ def step_three(table):
     table = knn.normalize_table(table, [5,7])
 
     # KNN
-    print('K_NN')
+    print('\nK_NN\n')
 
     labels = hw4_util.random_subsample_knn(table, 5, 10, constants.INDICES['salary'])
     accuracy = classifier_util.accuracy(labels)
@@ -73,7 +58,7 @@ def step_three(table):
     _printConfusionMatrix(labels, 'Salary')
 
     # Naive Bayes
-    print('\nNaive Bayes')
+    print('\nNaive Bayes\n')
     test_by_names = ['degree', 'ethnicity', 'gender']
 
     accuracy = classifier_util.accuracy(
@@ -91,10 +76,16 @@ def step_three(table):
     print('\t\tAccuracy = ' + str(accuracy) + ', error rate = ' + str(1 - accuracy))
     _printConfusionMatrix(labels, 'Salary')
 
+
 def main():
+    # Data Preprocessing
+    newTable = file_system.loadTable("income.csv")
+    removedRowsTable = clean.removeNA(newTable)
+    incomeDataNoNA = file_system.write(removedRowsTable, "incomeDataNoNA.csv")
+    print('\nRows with missing values (NA) have been removed.\n')
+
     table = file_system.loadTable('incomeDataNoNA.csv')
-    step_three(table)
+    knn_and_naive(table)
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

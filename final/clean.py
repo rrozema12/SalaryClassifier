@@ -7,14 +7,14 @@ def removeNA(table):
 
 def hasMissing(array):
     for el in array:
-        if (el == ' NA'):
+        if (el == 'NA'):
             return True
     return False
 
 def removeSpaces(table):
     newTable = []
     with open(table, 'wb') as csvfile:
-        writer = csv.writer(csvfile , skipinitialspace = False, delimiter=',',quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
+        writer = csv.writer(csvfile , skipinitialspace = False, delimiter=',')
         for row in table:
             writer.writerow(row)
         return newTable
