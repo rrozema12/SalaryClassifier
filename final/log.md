@@ -12,7 +12,7 @@ This is a log of each step I took to complete the final project.
    of missing values labeled with "NA".
  - I used my data cleaning script to remove the instances that contained an NA.
    I do this because I need my scripts to be able to run without errors, and
-   missing (NA) values will cause me lots of problems.  Because most of the 
+   missing (NA) values will cause me lots of problems.  Because most of the
    important attributes are not populated with numbers, I can not replace them
    with the averages, so I elected to get rid of them.
  - Changed the values of some of the instances so that it is easier for someone
@@ -36,13 +36,12 @@ This is a log of each step I took to complete the final project.
    and map each of the columns to give them a number.
  - This helped me do the calculations as well as print out the confusion matrix
    much easier.
- - After running the program multiple times, the highest accuracy for K-NN 
+ - After running the program multiple times, the highest accuracy for K-NN
    classification is 79.43179% with a random sample, and a 79.832297% accuracy
    with the stratified cross folds.
- - The highest recognition in the conusion matrix was 91.767676% for salary 
-   0 (greater than 50k) and 43.7136% recognition for salary 1 (less than 
-   or equal to 50k).
-
+ - The highest recognition in the confusion matrix was 91.767676% for salary
+   0 (less than or equal to 50k) and 43.7136% recognition for salary 1
+   (greater than 50k).
 
 ###Naive Bayes
  - For Naive Bayes, I basically used the code from assignment four.
@@ -50,15 +49,36 @@ This is a log of each step I took to complete the final project.
    and map each of the columns to give them a number.
  - This helped me do the calculations as well as print out the confusion matrix
    much easier.
- - After running the program multiple times, the highest accuracy for K-NN 
+ - After running the program multiple times, the highest accuracy for Naive Bayes
    classification is 77.206679% with a random sample, and a 77.490241% accuracy
    with the stratified cross folds.
- - The highest recognition in the conusion matrix was 91.9792% for salary 
-   0 (greater than 50k) and 33.6438% recognition for salary 1 (less than
-   or equal to 50k).
-
+ - The highest recognition in the confusion matrix was 91.9792% for salary
+   0 (less than or equal to than 50k) and 33.6438% recognition for salary 1
+   (greater than 50k).
 
 ###Decision Trees
-
+- For Decision Trees, I basically used the code from assignment five.
+  Because the majority of my code was categorical data, I had to repeat the same
+  step of discretization as I did for K-Nearest Neighbors and Naive Bayes
+  and map each of the columns to give them a number.
+- This helped me do the calculations as well as print out the confusion matrix
+  much easier.
+- After running the program multiple times, the highest accuracy for Decision Trees
+  classification is 77.3890414% accuracy with the stratified cross folds.
+- The highest recognition in the confusion matrix was 95.9223% for salary
+  0 (less than or equal to 50K) and 21.3038% recognition for salary 1
+  (greater than 50k).
+- The rules that I generated rose some interesting associations.  (Finish!!!!)
 
 ###Random Forests
+- For Random Forests, I basically used the code from assignment six.
+  Because the majority of my code was categorical data, I had to repeat the same
+  step of discretization and map each of the columns to give them a number.
+- I picked very specific N, M, and F values that gave me the highest accuracy.
+- N = 6000, M = 215, F = 2 gave me an accuracy of 77.6749566%
+- The highest recognition in the confusion matrix was 95.6923% for salary
+  0 (less than or equal to 50k) and 20.7459% recognition for salary 1
+  (greater than 50k).
+- One error that I continued to run into was that sometimes my confusion matrix
+  wouldn't print out the guesses for a salary >50K.  I was able to fix this by not
+  discretizing the columns.
