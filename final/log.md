@@ -20,15 +20,22 @@ This is a log of each step I took to complete the final project.
    dataset.
  - I eliminated some attributes because I felt like they were not as important
    to the dataset.
- - I ran into a problem where there were a lot of spces in my code.  This was
-   a very simple fix by deleting all the spaces by hand using excel with the
-   find and replace functionality.
+ - I ran into a problem where there were a lot of spaces in my code, especially after
+   the commas. This was a very simple fix by deleting all the spaces by hand using
+   excel with the find and replace functionality.
 
 ##Data Visualization
-
+  - I was able to use a couple of the pyplot functions that we used in homework
+    two to graph some of my data.  some of the most interesting graphs were the
+    frequency diagram and the pie chart.
+  - These two diagrams show specific characteristics about each attribute.  For
+    example, there are a lot more high school degrees in the dataset than I would
+    have expected.  Each of these graphs accurately show the number of times that
+    each degree occurs and the percentage it occurs.  I decided to keep these two
+    in my report for this reason.   
 
 ##Classifiers
-
+These are a couple classifiers and one ensemble method that I used on my dataset.
 
 ###K-Nearest Neighbors
  - For K-Nearest Neighbors, I basically used the code from assignment three.

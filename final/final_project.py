@@ -127,9 +127,6 @@ def decisiontree(table):
     table = table_utils.mapCol(table, constants.INDICES['salary'],
                                homework.get_salary)
 
-    #prettyTable = util.prettyPrint(table)
-
-    #print prettyTable
 
     output.printHeader('Decision Tree')
 
@@ -163,23 +160,16 @@ def decisiontree(table):
 
 def randomforest(table, n, m, f):
 
-
     output.printHeader('Random Forest')
     print("N = " + str(n) + " M = " + str(m) + " F = " + str(f))
     indexes = [INDICES['degree'], INDICES['ethnicity'], INDICES['gender']]
     domains = table_utils.get_domains(table, indexes)
-    print indexes
-    print domains
     forest_labels, train, test = \
                 run_a_table(table, indexes,
                     INDICES['salary'], n, m, f)
     forest_accuray = accuracy(forest_labels)
 
-    #print forest_labels, train, test
-
-    print('Titanic:')
-    print('\tRandom Forest')
-    print('\t\tAccuracy = ' + str(forest_accuray))
+    print('\tAccuracy = ' + str(forest_accuray))
     _printConfusionMatrix(forest_labels, 'Salary')
 
 
@@ -199,7 +189,7 @@ def main():
     decisiontree(table)
 
     table = file_system.loadTable('incomeDataNoNA.csv')
-    randomforest(table, 1000, 200, 15)
+    randomforest(table, 6000, 215, 2)
 
 if __name__ == '__main__':
     main()
