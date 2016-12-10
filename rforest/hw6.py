@@ -95,6 +95,7 @@ def step_three(auto_table, titanic_table, n, m, f):
     auto_domains = table_utils.get_domains(auto_table, auto_indexes)
     auto_forest_labels, auto_train, auto_test = run_a_table(auto_table, auto_indexes,
                     INDICES['mpg'], n, m, f)
+    print auto_forest_labels
     auto_forest_accuray = accuracy(auto_forest_labels)
     auto_tree_labels = classify(auto_train, auto_test,
                                    INDICES['mpg'], auto_indexes,

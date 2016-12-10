@@ -64,6 +64,8 @@ def step_one(table):
     labels = homework.stratified_cross_fold(table, 10, INDICES['survived'],
        myClassifier)
 
+    print labels
+
     acc = accuracy(labels)
     print('\n')
     print('Stratified CrossFolding')
@@ -95,6 +97,7 @@ def step_two(table):
     tree = decision_tree.tdidt(table, attributes, domains, INDICES['mpg'])
     decision_tree.print_rules(tree, AUTO_HEADERS, 'mpg')
 
+    print tree
     attributes = these(INDICES, 'cylinders', 'weight', 'year')
 
     # Creates a myClassifier function that's paritally filled out

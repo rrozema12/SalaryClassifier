@@ -5,17 +5,52 @@ import naive_bayes as bayes
 import table_utils
 import homework_util as homework
 import constants
+import analysis
+import diagram
+from constants import INDICES, INCOME
 import partition
+from partition import holdout
 import output_util as output
 import classifier_util
 import hw4_util
 import knn
 import util
+import decision_tree
+from decision_tree import classify
+from random_forest import run_a_table
+from util import these, flipKeyValues
+from functools import partial
+from classifier_util import accuracy
+
 
 def _printConfusionMatrix(labels, name):
     """ Prints a confusion matrix for given labels """
     output.printHeader('Confusion Matrix')
     hw4_util.print_confusion_matrix(labels, name)
+
+def data_vis():
+
+    table = file_system.loadTable('incomeDataNoNA.csv')
+
+    table = table_utils.mapCol(table, constants.INDICES['job-type'],
+                               homework.get_job_type)
+    table = table_utils.mapCol(table, constants.INDICES['degree'],
+                               homework.get_degree)
+    table = table_utils.mapCol(table, constants.INDICES['marital-status'],
+                               homework.get_marital_status)
+    table = table_utils.mapCol(table, constants.INDICES['ethnicity'],
+                               homework.get_ethnicity)
+    table = table_utils.mapCol(table, constants.INDICES['gender'],
+                               homework.get_gender)
+    table = table_utils.mapCol(table, constants.INDICES['country'],
+                               homework.get_country)
+    table = table_utils.mapCol(table, constants.INDICES['salary'],
+                               homework.get_salary)
+
+    col = util.getCol(table, INDICES['degree'])
+    freqDict = analysis.frequency(col)
+    diagram.frequency(freqDict, 'degree', 'Degree')
+    diagram.pie(freqDict, 'degree', 'Degree')
 
 
 def knn_and_naive(table):
@@ -76,6 +111,77 @@ def knn_and_naive(table):
     print('\t\tAccuracy = ' + str(accuracy) + ', error rate = ' + str(1 - accuracy))
     _printConfusionMatrix(labels, 'Salary')
 
+def decisiontree(table):
+    table = table_utils.mapCol(table, constants.INDICES['job-type'],
+                               homework.get_job_type)
+    table = table_utils.mapCol(table, constants.INDICES['degree'],
+                               homework.get_degree)
+    table = table_utils.mapCol(table, constants.INDICES['marital-status'],
+                               homework.get_marital_status)
+    table = table_utils.mapCol(table, constants.INDICES['ethnicity'],
+                               homework.get_ethnicity)
+    table = table_utils.mapCol(table, constants.INDICES['gender'],
+                               homework.get_gender)
+    table = table_utils.mapCol(table, constants.INDICES['country'],
+                               homework.get_country)
+    table = table_utils.mapCol(table, constants.INDICES['salary'],
+                               homework.get_salary)
+
+    #prettyTable = util.prettyPrint(table)
+
+    #print prettyTable
+
+    output.printHeader('Decision Tree')
+
+    attributes = these(INDICES, 'degree', 'ethnicity', 'gender')
+    domains = table_utils.get_domains(table, attributes)
+    tree = decision_tree.tdidt(table, attributes, domains, INDICES['salary'])
+
+    decision_tree.print_rules(tree, ['age', 'job-type', 'degree', 'marital-status',
+                    'ethnicity', 'gender', 'country', 'salary'],
+                              'salary')
+
+    attributes = these(INDICES, 'degree', 'ethnicity', 'gender')
+
+    # Creates a myClassifier function that's paritally filled out
+    # From decision_tree.classify
+    # Essentially a new function:
+    # myClassifier(training, test, class_index)
+    myClassifier = partial(decision_tree.classify, att_indexes=attributes, att_domains=domains)
+
+    labels = homework.stratified_cross_fold(table, 10, INDICES['salary'],
+       myClassifier)
+
+    acc = accuracy(labels)
+    print('\n')
+    print('Stratified CrossFolding')
+    print('\tAccuracy = ' + str(acc) + ', error rate = ' + str(1 - acc))
+    print('\n')
+
+    # Confusion Matrix
+    _printConfusionMatrix(labels, 'Salary')
+
+def randomforest(table, n, m, f):
+
+
+    output.printHeader('Random Forest')
+    print("N = " + str(n) + " M = " + str(m) + " F = " + str(f))
+    indexes = [INDICES['degree'], INDICES['ethnicity'], INDICES['gender']]
+    domains = table_utils.get_domains(table, indexes)
+    print indexes
+    print domains
+    forest_labels, train, test = \
+                run_a_table(table, indexes,
+                    INDICES['salary'], n, m, f)
+    forest_accuray = accuracy(forest_labels)
+
+    #print forest_labels, train, test
+
+    print('Titanic:')
+    print('\tRandom Forest')
+    print('\t\tAccuracy = ' + str(forest_accuray))
+    _printConfusionMatrix(forest_labels, 'Salary')
+
 
 def main():
     # Data Preprocessing
@@ -84,8 +190,16 @@ def main():
     incomeDataNoNA = file_system.write(removedRowsTable, "incomeDataNoNA.csv")
     print('\nRows with missing values (NA) have been removed.\n')
 
+    data_vis()
+
     table = file_system.loadTable('incomeDataNoNA.csv')
     knn_and_naive(table)
+
+    table = file_system.loadTable('incomeDataNoNA.csv')
+    decisiontree(table)
+
+    table = file_system.loadTable('incomeDataNoNA.csv')
+    randomforest(table, 1000, 200, 15)
 
 if __name__ == '__main__':
     main()

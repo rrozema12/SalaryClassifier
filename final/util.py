@@ -1,5 +1,31 @@
 import itertools
 
+# Return a col list
+def getCol(table, index):
+    col = []
+    for row in table:
+        if (row[index] == 'NA'): continue
+        col.append(row[index])
+    return col
+    
+def appendToDict(dictionary, key, arr):
+    """ Appends to a dictionary with arrays """
+    try:
+        dictionary[key].append(arr)
+    except KeyError:
+        dictionary[key] = [arr]
+    return dictionary
+
+def these(dictionary, *keys):
+    """ Gets all the values for a list of keys """
+    return [dictionary[key] for key in keys]
+
+def flipKeyValues(dictionary):
+    newDict = {}
+    for key, value in dictionary.iteritems():
+        newDict[value] = key
+    return newDict
+
 # Will attempt to convert the element
 # to its correct type
 def toCorrectType(test):

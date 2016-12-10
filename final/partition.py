@@ -23,3 +23,22 @@ def cut(table, numTest):
     """
     randomized = _randomize(table)
     return randomized[0:numTest], randomized[numTest:]
+    
+def _bag(table):
+    return [table[randint(0, len(table) - 1)] for _ in range(len(table))]
+
+
+def bagging(table, n):
+    """ Generates n test and remanider sets with replacement
+
+    :param table: a table
+    :param n: number of pairs of samples to create
+    :return: A list of tuples in the form
+            [(training1, test1), ... , (trainingn, testn)]
+    """
+    bags = []
+    size_test = int(.63 * len(table))
+    for i in range(n):
+        current_bag = _bag(table)
+        bags.append((current_bag[:size_test], current_bag[size_test:]))
+    return bags

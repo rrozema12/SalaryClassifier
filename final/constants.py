@@ -1,14 +1,14 @@
 #Department of energy ratings
-DOE_RATINGS = {
-    10: 45,
-    9: 37,
-    8: 31,
-    7: 27,
-    6: 24,
-    5: 20,
-    4: 17,
-    3: 15,
-    2: 14,
+AGE_RATINGS = {
+    10: 100,
+    9: 90,
+    8: 80,
+    7: 70,
+    6: 60,
+    5: 50,
+    4: 40,
+    3: 30,
+    2: 20,
     1: 0
 }
 
@@ -44,6 +44,17 @@ INDICES = {
     'country'       : 6,
     'salary'        : 7
 
+}
+
+INCOME = {
+    'age'           : 0,  # income dataset
+    'job-type'      : 1,
+    'degree'        : 2,
+    'marital-status': 3,
+    'ethnicity'     : 4,
+    'gender'        : 5,
+    'country'       : 6,
+    'salary'        : 7
 }
 
 NHTSA = {
