@@ -21,6 +21,7 @@ from random_forest import run_a_table
 from util import these, flipKeyValues
 from functools import partial
 from classifier_util import accuracy
+import numpy
 
 
 def _printConfusionMatrix(labels, name):
@@ -32,26 +33,15 @@ def data_vis():
 
     table = file_system.loadTable('incomeDataNoNA.csv')
 
-    table = table_utils.mapCol(table, constants.INDICES['job-type'],
-                               homework.get_job_type)
-    table = table_utils.mapCol(table, constants.INDICES['degree'],
-                               homework.get_degree)
-    table = table_utils.mapCol(table, constants.INDICES['marital-status'],
-                               homework.get_marital_status)
-    table = table_utils.mapCol(table, constants.INDICES['ethnicity'],
-                               homework.get_ethnicity)
-    table = table_utils.mapCol(table, constants.INDICES['gender'],
-                               homework.get_gender)
-    table = table_utils.mapCol(table, constants.INDICES['country'],
-                               homework.get_country)
-    table = table_utils.mapCol(table, constants.INDICES['salary'],
-                               homework.get_salary)
-
-    col = util.getCol(table, INDICES['degree'])
+    col = util.getCol(table, INDICES['ethnicity'])
     freqDict = analysis.frequency(col)
-    diagram.frequency(freqDict, 'degree', 'Degree')
-    diagram.pie(freqDict, 'degree', 'Degree')
+    diagram.frequency(freqDict, 'ethnicity', 'Frequency-Ethnicity')
+    diagram.pie(freqDict, 'ethnicity', 'Pie-Ethnicity')
 
+    col = util.getCol(table, INDICES['marital-status'])
+    freqDict = analysis.frequency(col)
+    diagram.frequency(freqDict, 'marital-status', 'Frequency-Marital-Status')
+    diagram.pie(freqDict, 'marital-status', 'Marital-Status')
 
 def knn_and_naive(table):
     """ Analyzes the table based on Knn and Naive Bayes

@@ -7,7 +7,7 @@ import analysis
 import math_utils
 import dataOperations
 
-figureFolder = 'pritnables/'
+figureFolder = 'graphs/'
 
 
 def frequency(frequencyDict, name, title):

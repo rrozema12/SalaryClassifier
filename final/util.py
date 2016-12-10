@@ -7,7 +7,7 @@ def getCol(table, index):
         if (row[index] == 'NA'): continue
         col.append(row[index])
     return col
-    
+
 def appendToDict(dictionary, key, arr):
     """ Appends to a dictionary with arrays """
     try:

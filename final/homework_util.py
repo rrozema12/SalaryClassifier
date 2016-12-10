@@ -350,7 +350,6 @@ def get_salary(x):
 
 
 
-
 if __name__ == '__main__':
     row = [18.0,8,307.0,130.0,3504,12.0,70,1,"chevrolet chevelle malibu",2881]
     print getNamedTuples(row, 'mpg', 'origin', 'weight')

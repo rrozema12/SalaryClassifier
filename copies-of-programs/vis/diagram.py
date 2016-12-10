@@ -7,12 +7,13 @@ import analysis
 import math_utils
 import dataOperations
 
-figureFolder = 'pdfs/'
+figureFolder = './graphs/'
 
 
 def frequency(frequencyDict, name, title):
     pyplot.figure()
 
+    pyplot.set_tight_layout(True)
     # Create values
     ys = util.getValues(frequencyDict)
     xs = util.getKeys(frequencyDict)
@@ -33,47 +34,48 @@ def frequency(frequencyDict, name, title):
     pyplot.close()
 
 def frequencyWithRanges(frequencyDict, name, xlabels, title):
-    pyplot.figure()
-
+    fig = pyplot.figure()
+    fig.set_tight_layout(True)
     # Create values
     ys = util.getValues(frequencyDict)
     xs = util.getKeys(frequencyDict)
     xrng = numpy.arange(len(xs))
 
     # Create plot
-    pyplot.suptitle(name)
-    pyplot.bar(xrng, ys, alpha=0.75, align='center')
-    pyplot.xticks(xrng, xlabels)
-    pyplot.ylabel('Count')
+    fig.suptitle(name)
+    fig.bar(xrng, ys, alpha=0.75, align='center')
+    fig.xticks(xrng, xlabels)
+    fig.ylabel('Count')
 
     # Save plot
     filename = title + '.pdf'
-    pyplot.savefig(figureFolder + filename)
+    fig.savefig(figureFolder + filename)
 
-    pyplot.figure() # Reset for good measure
-    pyplot.close()
+    fig.figure() # Reset for good measure
+    fig.close()
 
 def pie(frequencyDict, name, step):
-    pyplot.figure()
+    fig = pyplot.figure()
+    fig.set_tight_layout(True)
 
     # Create values
     ys = util.getValues(frequencyDict)
     xs = util.getKeys(frequencyDict)
 
     # Create plot
-    pyplot.suptitle(name)
-    pyplot.pie(ys, labels=xs, autopct='%1.1f%%')
-    labels = [r'mpg', r'cylinders', r'displacement', r'horsepower', r'weight'
-        , r'acceleration', r'year', r'origin', r'name', r'msrp']
-    pyplot.legend(labels)
-    pyplot.tight_layout()
+    fig.suptitle(name)
+    fig.pie(ys, labels=xs, autopct='%1.1f%%')
+    #labels = [r'mpg', r'cylinders', r'displacement', r'horsepower', r'weight'
+    #    , r'acceleration', r'year', r'origin', r'name', r'msrp']
+    #pyplot.legend(labels)
+    fig.tight_layout()
 
     # Save plot
     filename = str(step) + '-pie-' + name + '.pdf'
-    pyplot.savefig(figureFolder + filename)
+    fig.savefig(figureFolder + filename)
 
-    pyplot.figure() # Reset for good measure
-    pyplot.close()
+    fig.figure() # Reset for good measure
+    fig.close()
 
 def dot(frequencyDict, name, step):
     pyplot.figure()
@@ -90,10 +92,11 @@ def dot(frequencyDict, name, step):
     pyplot.xlabel(name)
 
      # Save plot
-    filename = str(step) + '-dot-' + name + '.pdf'
+    filename = name + '.pdf'
     pyplot.savefig(figureFolder + filename)
 
     pyplot.figure() # Reset for good measure
+    pyplot.close()
 
 def hist(frequencyDict, name, step):
     pyplot.figure()

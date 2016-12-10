@@ -64,3 +64,6 @@ NHTSA = {
     2 : 2000,
     1 : 0
 }
+
+INCOME_HEADERS = ['age', 'job-type', 'degree', 'marital-status',
+        'ethnicity', 'gender', 'country', 'salary']
