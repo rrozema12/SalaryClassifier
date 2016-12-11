@@ -25,7 +25,7 @@ def frequency(frequencyDict, name, title):
 
     # Save plot
     filename = title + '.pdf'
-    pyplot.savefig(filename)
+    pyplot.savefig(figureFolder + filename)
     pyplot.xlabel(name)
     pyplot.ylabel('Count')
 
@@ -71,7 +71,7 @@ def pie(frequencyDict, name, step):
 
     # Save plot
     filename = str(step) + '-pie-' + name + '.pdf'
-    pyplot.savefig(filename)
+    pyplot.savefig(figureFolder + filename)
 
     pyplot.figure() # Reset for good measure
     pyplot.close()

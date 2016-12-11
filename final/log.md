@@ -33,6 +33,12 @@ This is a log of each step I took to complete the final project.
     have expected.  Each of these graphs accurately show the number of times that
     each degree occurs and the percentage it occurs.  I decided to keep these two
     in my report for this reason.   
+  - I continued to encounter a warning that stated: "warnings.warn("tight_layout :
+    falling back to Agg renderer")."  I looked on-line and at previous programs to
+    see if there was an easy way to fix this warning.  I tried multiple ways and
+    was unable to get it figured out.  The graphs still displayed correctly so
+    I was not too worried about the warning.
+
 
 ##Classifiers
 These are a couple classifiers and one ensemble method that I used on my dataset.
@@ -76,13 +82,14 @@ These are a couple classifiers and one ensemble method that I used on my dataset
   0 (less than or equal to 50K) and 21.3038% recognition for salary 1
   (greater than 50k).
 - The rules that I generated rose some interesting associations.  (Finish!!!!)
+- I used majority voting for this classifier
 
 ###Random Forests
 - For Random Forests, I basically used the code from assignment six.
   Because the majority of my code was categorical data, I had to repeat the same
   step of discretization and map each of the columns to give them a number.
 - I picked very specific N, M, and F values that gave me the highest accuracy.
-- N = 6000, M = 215, F = 2 gave me an accuracy of 77.6749566%
+- N = 3000, M = 215, F = 2 gave me an accuracy of 77.6749566%
 - The highest recognition in the confusion matrix was 95.6923% for salary
   0 (less than or equal to 50k) and 20.7459% recognition for salary 1
   (greater than 50k).
