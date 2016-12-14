@@ -348,7 +348,16 @@ def get_salary(x):
     else:
         return '0'
 
+def get_salary_box(x):
+    """ returns the int value for the ordinal value class
 
+    :param x: a value that is either 'crew', 'first', 'second', or 'third'
+    :return: returns 3 if 'crew', 2 if first, etc.
+    """
+    if x == '>50K':
+        return 1
+    else:
+        return 0
 
 if __name__ == '__main__':
     row = [18.0,8,307.0,130.0,3504,12.0,70,1,"chevrolet chevelle malibu",2881]

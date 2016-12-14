@@ -23,14 +23,15 @@ from functools import partial
 from classifier_util import accuracy
 import numpy
 
-# Global variables that will be used in the accuracy comparison at the end
+accuracy_values = []
 
+"""
+ Function that discretizes the table to make it usable for the
+ classification functions and classifiers
 
-# Function that discretizes the table to make it usable for the
-# classification functions and classifiers
-#
-# Parameter: income dataset
-# Return: nothing
+ Parameter: income dataset
+ Return: nothing
+"""
 def map_columns_table(table):
     table = table_utils.mapCol(table, constants.INDICES['job-type'],
                                homework.get_job_type)
@@ -47,23 +48,26 @@ def map_columns_table(table):
     table = table_utils.mapCol(table, constants.INDICES['salary'],
                                homework.get_salary)
 
+"""
+ Helper function to print the confusion matrix
 
-# Helper function to print the confusion matrix
-#
-# Parameters: labels: the labels for the conusion matrix
-#             name: the name to be displayed for the labels
-# Return: a formatted confusion matrix
+ Parameters: labels: the labels for the conusion matrix
+             name: the name to be displayed for the labels
+ Return: a formatted confusion matrix
+"""
 def _printConfusionMatrix(labels, name):
     """ Prints a confusion matrix for given labels """
     output.printHeader('Confusion Matrix')
     hw4_util.print_confusion_matrix(labels, name)
 
-# Function that does all of the data visualization. In the case of this
-# project, freqency diagrams and pie charts are used to displat how
-# many times and how often a particular column appears in the table.
-#
-# Parameters: None
-# Return: matplotlib graphs of selected columns of the dataset.
+"""
+ Function that does all of the data visualization. In the case of this
+ project, freqency diagrams and pie charts are used to displat how
+ many times and how often a particular column appears in the table.
+
+ Parameters: None
+ Return: matplotlib graphs of selected columns of the dataset.
+"""
 def data_vis():
     table = file_system.loadTable('incomeDataNoNA.csv')
 
@@ -96,7 +100,7 @@ def data_vis():
 
     col = util.getCol(table, INDICES['degree'])
     freqDict = analysis.frequency(col)
-    diagram.frequency(freqDict, 'Degree', 'Frequency-Degre')
+    diagram.frequency(freqDict, 'Degree', 'Frequency-Degree')
 
     col = util.getCol(table, INDICES['ethnicity'])
     freqDict = analysis.frequency(col)
@@ -106,11 +110,13 @@ def data_vis():
     freqDict = analysis.frequency(col)
     diagram.frequency(freqDict, 'Marital Status', 'Frequency-Marital-Status')
 
-# Function that does all of the calculations, accuracies, and confusion
-# matrices for both KNN and Naive Bayes.
-#
-# Parameters: income dataset
-# Return: accuracies and confusion matrices for KNN and Naive Bayses classifiers.
+"""
+ Function that does all of the calculations, accuracies, and confusion
+ matrices for both KNN and Naive Bayes.
+
+ Parameters: income dataset
+ Return: accuracies and confusion matrices for KNN and Naive Bayses classifiers.
+"""
 def knn_and_naive(table):
     """ Analyzes the table based on Knn and Naive Bayes
 
@@ -123,14 +129,15 @@ def knn_and_naive(table):
     # KNN
     output.printHeader('K-Nearest Neighbors')
 
-    labels = hw4_util.random_subsample_knn(table, 50, 20, constants.INDICES['salary'])
+    labels = hw4_util.random_subsample_knn(table, 5, 10, constants.INDICES['salary'])
     accuracy = classifier_util.accuracy(labels)
     print('\tRandom Subsample')
     print('\t\tAccuracy = ' + str(accuracy) + ', error rate = ' + str(1 - accuracy))
 
-    labels = hw4_util.stratified_cross_fold_knn(table, 50, 20, constants.INDICES['salary'])
+    labels = hw4_util.stratified_cross_fold_knn(table, 5, 10, constants.INDICES['salary'])
 
     accuracy = classifier_util.accuracy(labels)
+    accuracy_values.append(accuracy)
     print('\tStratified Cross Folds (5)')
     print('\t\tAccuracy = ' + str(accuracy) + ', error rate = ' + str(1 - accuracy))
 
@@ -150,15 +157,18 @@ def knn_and_naive(table):
     labels = hw4_util.stratified_cross_fold_naive_bayes(table, 10, constants.INDICES['salary'],
                                                         test_by_names)
     accuracy = classifier_util.accuracy(labels)
+    accuracy_values.append(accuracy)
     print('\tStratified CrossFolding')
     print('\t\tAccuracy = ' + str(accuracy) + ', error rate = ' + str(1 - accuracy))
     _printConfusionMatrix(labels, 'Salary')
 
-# Function that does all of the decision tree calculations and confusion matrix
-# for Decision Trees
-#
-# Parameters: income dataset
-# Return: accuracies and confusion matrices for the decision tree classifier.
+"""
+ Function that does all of the decision tree calculations and confusion matrix
+ for Decision Trees
+
+ Parameters: income dataset
+ Return: accuracies and confusion matrices for the decision tree classifier.
+"""
 def decisiontree(table):
     map_columns_table(table)
 
@@ -184,6 +194,7 @@ def decisiontree(table):
        myClassifier)
 
     acc = accuracy(labels)
+    accuracy_values.append(acc)
     print('\n')
     print('Stratified CrossFolding')
     print('\tAccuracy = ' + str(acc) + ', error rate = ' + str(1 - acc))
@@ -192,14 +203,16 @@ def decisiontree(table):
     # Confusion Matrix
     _printConfusionMatrix(labels, 'Salary')
 
-# Function that does all of the decision tree calculations and confusion matrix
-# for Random Forests
-#
-# Parameters: income dataset
-#             number of trees to be generated
-#             number of trees to uses
-#             number of elements in random subsets
-# Return: accuracies and confusion matrices for the random forests classifier.
+"""
+ Function that does all of the decision tree calculations and confusion matrix
+ for Random Forests
+
+ Parameters: income dataset
+             number of trees to be generated
+             number of trees to uses
+             number of elements in random subsets
+ Return: accuracies and confusion matrices for the random forests classifier.
+"""
 def randomforest(table, n, m, f):
     output.printHeader('Random Forest')
     print("N = " + str(n) + " M = " + str(m) + " F = " + str(f))
@@ -208,9 +221,10 @@ def randomforest(table, n, m, f):
     forest_labels, train, test = \
                 run_a_table(table, indexes,
                     INDICES['salary'], n, m, f)
-    forest_accuray = accuracy(forest_labels)
+    forest_accurcay = accuracy(forest_labels)
+    accuracy_values.append(forest_accuracy)
 
-    print('\tAccuracy = ' + str(forest_accuray))
+    print('\tAccuracy = ' + str(forest_accurcay))
     _printConfusionMatrix(forest_labels, 'Salary')
 
 
@@ -237,8 +251,11 @@ def main():
     table = file_system.loadTable('incomeDataNoNA.csv')
     randomforest(table, 3000, 215, 2)
 
-    #Accuracy Comparison
-    output.printHeader('Accuray Comparison')
+    output.printHeader("Accuracy Comparison")
+    print 'K-NN: ' + str(accuracy_values[0] + '\n')
+    print 'Naive Bayes: ' + str(accuracy_values[1] + '\n')
+    print 'Decision Tree: ' + str(accuracy_values[2] + '\n')
+    print 'Random Forest: ' + str(accuracy_values[3])
 
 if __name__ == '__main__':
     main()

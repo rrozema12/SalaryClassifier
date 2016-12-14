@@ -54,7 +54,7 @@ def frequencyWithRanges(frequencyDict, name, xlabels, title):
     pyplot.close()
 
 def pie(frequencyDict, name, step):
-    pyplot.figure()
+    pyplot.figure(figsize=(20,20))
 
     # Create values
     ys = util.getValues(frequencyDict)
@@ -66,7 +66,7 @@ def pie(frequencyDict, name, step):
     labels = [r'High School', r'Bachelors', r'masters', r'doctorate', r'dropout'
         , r'Assiciate', r'Middleschool', r'Elementary', r'Prof-school', r'other']
     pyplot.legend(labels)
-    pyplot.legend(loc=2, prop={'size':6})
+    pyplot.legend(loc=2, prop={'size':15})
     pyplot.tight_layout()
 
     # Save plot
@@ -142,11 +142,11 @@ def scatter(points, name, step):
     pyplot.close()
 
 def box(arrays, name, xlabels, step):
-    pyplot.figure()
+    pyplot.figure(figsize=(50,50))
     fig, ax = pyplot.subplots()
 
     ax.boxplot(arrays)
-    pyplot.xticks(numpy.arange(1, len(xlabels)+1, 1), xlabels)
+    pyplot.xticks(numpy.arange(1, len(xlabels)+10, 1), xlabels)
 
     filename = str(step) + '-box-' + name + '.pdf'
     pyplot.savefig(figureFolder + filename)

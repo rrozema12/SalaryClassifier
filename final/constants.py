@@ -21,5 +21,16 @@ INCOME = {
     'salary'        : 7
 }
 
+AGE_RATINGS = {
+    90:  1,
+    80:  2,
+    70:  3,
+    60:  4,
+    50:  5,
+    40:  6,
+    30:  7,
+    20:  8
+}
+
 INCOME_HEADERS = ['age', 'job-type', 'degree', 'marital-status',
         'ethnicity', 'gender', 'country', 'salary']
