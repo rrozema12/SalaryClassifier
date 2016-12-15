@@ -6,7 +6,7 @@ import file_system
 import clean
 import naive_bayes as bayes
 import table_utils
-import homework_util as homework
+import hw4_util as homework
 import constants
 import analysis
 import diagram
@@ -72,7 +72,7 @@ def _printConfusionMatrix(labels, name):
  Return: matplotlib graphs of selected columns of the dataset.
 """
 def data_vis():
-    table = file_system.loadTable('incomeDataNoNA.csv')
+    table = file_system.loadTable('incomeFullNoNA.csv')
 
     col = util.getCol(table, INDICES['degree'])
     freqDict = analysis.frequency(col)
@@ -100,14 +100,14 @@ def data_vis():
                                homework.get_marital_status)
     table = table_utils.mapCol(table, constants.INDICES['ethnicity'],
                                homework.get_ethnicity)
+    table = table_utils.mapCol(table, constants.INDICES['salary'],
+                               homework.get_salary_continuous)
+    table = table_utils.mapCol(table, constants.INDICES['gender'],
+                               homework.get_gender)
 
     col = util.getCol(table, INDICES['degree'])
     freqDict = analysis.frequency(col)
     diagram.frequency(freqDict, 'Degree', 'Frequency-Degree')
-
-    col = util.getCol(table, INDICES['ethnicity'])
-    freqDict = analysis.frequency(col)
-    diagram.frequency(freqDict, 'Ethnicity', 'Frequency-Ethnicity')
 
     col = util.getCol(table, INDICES['marital-status'])
     freqDict = analysis.frequency(col)
@@ -232,9 +232,9 @@ def randomforest(table, n, m, f):
 
 def main():
     # Data preprocessing
-    newTable = file_system.loadTable("income.csv")
+    newTable = file_system.loadTable("incomeFull.csv")
     removedRowsTable = clean.removeNA(newTable)
-    incomeDataNoNA = file_system.write(removedRowsTable, "incomeDataNoNA.csv")
+    incomeDataFullNoNA = file_system.write(removedRowsTable, "incomeFullNoNA.csv")
     output.printHeader('Rows with NAs have been removed.')
 
     # Data visualization
@@ -242,15 +242,15 @@ def main():
     output.printHeader('Data visualization complete.')
 
     # KNN and Naive Bayes classifiers
-    table = file_system.loadTable('incomeDataNoNA.csv')
+    table = file_system.loadTable('incomeFullNoNA.csv')
     knn_and_naive(table)
 
     # Decision Tree classifier
-    table = file_system.loadTable('incomeDataNoNA.csv')
+    table = file_system.loadTable('incomeFullNoNA.csv')
     decisiontree(table)
 
     #Random Forest classifier
-    table = file_system.loadTable('incomeDataNoNA.csv')
+    table = file_system.loadTable('incomeFullNoNA.csv')
     randomforest(table, 3000, 215, 2)
 
 if __name__ == '__main__':

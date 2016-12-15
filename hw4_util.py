@@ -341,9 +341,9 @@ def get_ethnicity(x):
         return 1
     elif x == 'Black':
         return 2
-    elif x == 'Amer-Indian-Eskimo':
+    elif x == 'Native American':
         return 3
-    elif x == 'Asian-Pac-Islander':
+    elif x == 'Asian':
         return 4
     else:
         return 0
@@ -389,3 +389,11 @@ def get_salary(x):
         return '1'
     else:
         return '0'
+
+def get_salary_continuous(x):
+    """ returns the int value for the ordinal salary
+    """
+    if x == '>50K':
+        return 1
+    else:
+        return 0

@@ -27,3 +27,13 @@ def frequencies_for_cutoffs(col, cutoffs):
                 freqs[i] += 1
                 break
     return freqs
+
+def points(table, x_index, y_index):
+    vals = []
+    for row in table:
+        x = row[x_index]
+        y = row[y_index]
+        if x == 'NA' or y == 'NA':
+            continue
+        vals.append([x,y])
+    return vals
