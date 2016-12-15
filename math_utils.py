@@ -1,3 +1,7 @@
+# math_utils.py
+# used in the future for linear regression
+# does some other calculations
+
 import util
 import numpy
 import math

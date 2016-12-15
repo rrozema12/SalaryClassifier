@@ -1,3 +1,6 @@
+# partition.py
+# partitions the dataset for decision trees and cross folding
+
 from random import randint
 
 def _randomize(table):
@@ -23,7 +26,7 @@ def cut(table, numTest):
     """
     randomized = _randomize(table)
     return randomized[0:numTest], randomized[numTest:]
-    
+
 def _bag(table):
     return [table[randint(0, len(table) - 1)] for _ in range(len(table))]
 

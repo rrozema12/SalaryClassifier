@@ -1,3 +1,6 @@
+# constants.py
+# used to get the indexes of the columns in the dataset
+
 INDICES = {
     'age'           : 0,  # income dataset
     'job-type'      : 1,
@@ -19,17 +22,6 @@ INCOME = {
     'gender'        : 5,
     'country'       : 6,
     'salary'        : 7
-}
-
-AGE_RATINGS = {
-    90:  1,
-    80:  2,
-    70:  3,
-    60:  4,
-    50:  5,
-    40:  6,
-    30:  7,
-    20:  8
 }
 
 INCOME_HEADERS = ['age', 'job-type', 'degree', 'marital-status',

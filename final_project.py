@@ -1,3 +1,6 @@
+# final_project.py
+# does all of the work
+
 import csv
 import file_system
 import clean
@@ -222,7 +225,6 @@ def randomforest(table, n, m, f):
                 run_a_table(table, indexes,
                     INDICES['salary'], n, m, f)
     forest_accurcay = accuracy(forest_labels)
-    accuracy_values.append(forest_accuracy)
 
     print('\tAccuracy = ' + str(forest_accurcay))
     _printConfusionMatrix(forest_labels, 'Salary')
@@ -250,12 +252,6 @@ def main():
     #Random Forest classifier
     table = file_system.loadTable('incomeDataNoNA.csv')
     randomforest(table, 3000, 215, 2)
-
-    output.printHeader("Accuracy Comparison")
-    print 'K-NN: ' + str(accuracy_values[0] + '\n')
-    print 'Naive Bayes: ' + str(accuracy_values[1] + '\n')
-    print 'Decision Tree: ' + str(accuracy_values[2] + '\n')
-    print 'Random Forest: ' + str(accuracy_values[3])
 
 if __name__ == '__main__':
     main()

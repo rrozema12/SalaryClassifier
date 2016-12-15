@@ -1,3 +1,6 @@
+# util.py
+# general utility stuff.
+
 import itertools
 
 # Return a col list

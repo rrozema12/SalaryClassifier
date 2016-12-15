@@ -1,3 +1,6 @@
+# naive_bayes.py
+# does the naive bayes calculations
+
 import table_utils
 import math_utils as math
 

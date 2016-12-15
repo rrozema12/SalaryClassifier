@@ -1,3 +1,6 @@
+# diagram.py
+# used for plotting graphs for data visuealization
+
 import matplotlib
 matplotlib.use('pdf')
 import matplotlib.pyplot as pyplot

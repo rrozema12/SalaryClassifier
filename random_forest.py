@@ -1,3 +1,6 @@
+# random_forest.py
+# does the random forest calcutlaions
+
 import decision_tree
 import partition
 import heapq

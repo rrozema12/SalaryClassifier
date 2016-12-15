@@ -1,3 +1,6 @@
+# table_utils.py
+# does some checks on the table
+
 def get_domains(table, att_indexes):
     """ Based on a table gets the domains for the given att_indexes
 

@@ -1,3 +1,6 @@
+# classifier_util.py
+# used for classification approaches
+
 import util
 import numpy
 import table_utils
@@ -58,8 +61,3 @@ def _findFalses(splitLabels, forLabel):
                 if actual != predicted:
                     falses += 1
     return falses
-
-
-if __name__ == '__main__':
-    labels = [(1, 1), (1, 4), (1, 2), (2, 2), (2, 3), (3, 3)]
-    print _split(labels)

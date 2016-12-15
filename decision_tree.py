@@ -1,3 +1,6 @@
+# decision_tree.py
+# used to do all the decision tree calculations
+
 import table_utils
 from util import these, appendToDict
 import math

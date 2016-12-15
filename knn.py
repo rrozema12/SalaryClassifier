@@ -1,3 +1,6 @@
+# knn.py
+# does knn calculations
+
 import table_utils
 import numpy
 from random import randint
