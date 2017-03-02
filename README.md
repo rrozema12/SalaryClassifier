@@ -1,4 +1,4 @@
-# Classification Algorithims and Ensemble Methods on CSV Datasets
+# Classification Algorithims on CSV Datasets
 
 ## Informal Description of the Goal and how to Execute
 The goal of the project is to develop and evaluation classifiers for a dataset.
@@ -31,12 +31,10 @@ Run this program by entering the following: `python final_project.py > "output_f
     ```
 
 ## Details about the Sample Dataset
-For my project I will be using a dataset corresponding to whether a particular
-person makes more than 50k a year based on particular qualities.
+For my project I will be using a dataset corresponding to whether a particular `person makes more than 50k a year based on particular qualities.  See the description of the attributes I used for prediction below.
 
-Some of the attributes that I will be using are described below.  
-1. **Age**   
-    > The current age of each person when the data was collected.   
+1. **Age**     
+    > The current age of each person when the data was collected.    
 
 2. **Degree**   
     > The highest level of education that each person had when the data was collected. This can be High School, Bachelors, Masters, Doctorate, College Drop Out, Associate, Middle School, Elementary, or Professional School.  
