@@ -1,4 +1,4 @@
-# Data-Mining-Final-Project
+# Data-Mining-Classifiers
 The goal of the project is to develop and evaluation classifiers for a dataset.
 
 Given a new person with some of the attributes from the table, I will be
