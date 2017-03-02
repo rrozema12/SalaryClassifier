@@ -31,7 +31,7 @@ Run this program by entering the following: `python final_project.py > "output_f
     ```
 
 ## Details about the Sample Dataset
-For my project I will be using a dataset corresponding to whether a particular `person makes more than 50k a year based on particular qualities.  See the description of the attributes I used for prediction below.
+For my project I will be using a dataset corresponding to whether a particular person makes more than 50k a year based on particular qualities.  See the description of the attributes I used for prediction below.
 
 1. **Age**     
     > The current age of each person when the data was collected.    
