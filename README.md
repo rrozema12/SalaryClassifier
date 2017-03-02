@@ -39,12 +39,19 @@ The dataset is from: http://archive.ics.uci.edu/ml/machine-learning-databases/ad
 # Wiki
 The project is split up into many "util" modules to help keep organized.
 
-### Rules:
-1. If you're making a new classifier, put it in it's own module.
-2. Use `module-level private` functions with a single underscore `_myPrivate()`
-3. Delete things. (It's all saved to git anyway)
-4. Comment (I haven't been so good about this), and add to wiki if you make
-a new module
+### Requirements - Download and Install:
+1. numpy
+```
+pip install numpy
+```
+2. matplotlib
+```
+pip install matplotlib
+```
+3. tabulate
+```
+pip install tabulate
+```
 
 ### Guidelines:
 1. If you can be general, be general. For example:
@@ -92,12 +99,6 @@ Only for math. Just math math math math.
 ### table_utils.py
 For manipulating a 2d array (table).
 
-### homework_util.py
-Put functions in here that are specific to a homework assignment. If you ask
-yourself the question "Would I need this in a personal project?" and you
-say "no", then put it in `homework_util`. Don't abuse this. Be more general
-if you can.
-
 ### naive_bayes.py
 This is the naive_bayes module. Duh?
 
@@ -116,4 +117,3 @@ Functions for decision tree stuff
 
 ### random_forest.py
 Functions for random forest stuff
-
