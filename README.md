@@ -17,15 +17,15 @@ Run this program by entering the following: `python final_project.py > "output_f
     direct the output to a file.
 
 ### Requirements - Download and Install:
-1. numpy
+1. numpy  
     ```
     pip install numpy
     ```
-2. matplotlib
+2. matplotlib  
     ```
     pip install matplotlib
     ```
-3. tabulate
+3. tabulate  
     ```
     pip install tabulate
     ```
@@ -58,7 +58,7 @@ Some of the attributes that I will be using are described below.
 
 **Note**: Every attribute (besides age) are categorical.  This meant that I needed to go through the entire data set and discretize it, making a temporary dataset that has continuous attributes that represent categorical data.
 
-## Files and Their Descriptions
+## File Names and Descriptions
 ### constants.py
 Only for constant variables. No functions please.
 
@@ -93,5 +93,5 @@ Functions for decision tree stuff
 ### random_forest.py
 Functions for random forest stuff
 
-#### Sources
+## Sources
 The dataset is from: http://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data
