@@ -1,10 +1,12 @@
-# Data-Mining-Classifiers
+# Classification Algorithims and Ensemble Methods on CSV Datasets
+
+## Informal Description of the Goal and how to Execute
 The goal of the project is to develop and evaluation classifiers for a dataset.
 
 Given a new person with some of the attributes from the table, I will be
 predicting whether that person will make more or less than 50k per year.
 
-Run this program by entering the following: python final_project.py > "output_file_name"
+Run this program by entering the following: `python final_project.py > "output_file_name"`
   - This will generate an output file with all of the classifier information in a file name
     of your choosing.
   - The visualization part of this project can be found in the graphs folder once the
@@ -14,72 +16,35 @@ Run this program by entering the following: python final_project.py > "output_fi
     for.  Until I find a solution, the "prettiest" way to see the output is if you
     direct the output to a file.
 
-## Details
+## Details about the Sample Dataset
 For my project I will be using a dataset corresponding to whether a particular
 person makes more than 50k a year based on particular qualities.
 
-Some of the attributes that I will be using are:
-   - age
-   - degree
-   - marital status
-   - position in company
-   - ethnicity
-   - gender
-   - country
-   - salary
+Some of the attributes that I will be using are described below.
+1. **Age**   
+    > The current age of each person when the data was collected.   
 
-Every attribute (besides age) are categorical.  This meant that I needed to go through
-the entire data set and discretize it, making a temporary dataset that has
-continuous attributes that represent categorical data.
+2. **Degree**   
+    > The highest level of education that each person had when the data was collected. This can be High School, Bachelors, Masters, Doctorate, College Drop Out, Associate, Middle School, Elementary, or Professional School.  
 
+3. **Marital Status**   
+    > The current marital status of each person when the data was collected.  This can be Never Married, Married, Divorced, Spouse Absent, Widowed, or Seperated.
 
-## Sources
-The dataset is from: http://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data
+4. **Ethnicity**  
+    > The ethnicity of each person that had their data collected. This can be White, Black, Native American, or Asian.
 
-# Wiki
-The project is split up into many "util" modules to help keep organized.
+5. **Gender**  
+    > The gender of each person that had their data collected. This can be Male or Female.
 
-### Rules:
-1. If you're making a new classifier, put it in it's own module.
-2. Use `module-level private` functions with a single underscore `_myPrivate()`
-3. Delete things. (It's all saved to git anyway)
-4. Comment (I haven't been so good about this), and add to wiki if you make
-a new module
+6. **Country**  
+    > The current country that each person resided at the time of the data was collected. This could be the United States, the Philippines, Puerto Rico, Mexico, the Dominican Republic, Portugal, Canada, Taiwan, Cuba, or Jamaica.
 
-### Guidelines:
-1. If you can be general, be general. For example:
+7. ***Salary***: *The attribute that we will classify on*
+    > The current salary that each person made at the time the data is collected.  This will be the attribute that we are classifying on. This could be either >50k or <=50k.
 
-```
-# BAD
-def getMPGs():
-  ...
+**Note**: Every attribute (besides age) are categorical.  This meant that I needed to go through the entire data set and discretize it, making a temporary dataset that has continuous attributes that represent categorical data.
 
-# GOOD
-def getColByName():
-  """ getColByName('mpg') """
-  ...
-```
-
-
-## Modules
-A list of modules.
-
-### util.py
-Hyper general functions that don't fall into any of the below
-categories.
-
-#### Good utility function:
-```
-def dictionaryToArray(dictionary):
-    return [ value for key, value in dictionary.iteritems()]
-```
-
-#### Bad utility function:
-```
-def normalizeTable(table, exceptFor=None):
-  ...
-```
-
+## Files and Their Descriptions
 ### constants.py
 Only for constant variables. No functions please.
 
@@ -93,16 +58,13 @@ Only for math. Just math math math math.
 For manipulating a 2d array (table).
 
 ### homework_util.py
-Put functions in here that are specific to a homework assignment. If you ask
-yourself the question "Would I need this in a personal project?" and you
-say "no", then put it in `homework_util`. Don't abuse this. Be more general
-if you can.
+Put functions in here that are specific to a homework assignment.
 
 ### naive_bayes.py
-This is the naive_bayes module. Duh?
+This is the naive_bayes module.
 
 ### knn.py
-Contains functions pertaining to knn
+Contains functions pertaining to KNN
 
 ### classifier_util.py
 This is utilities that can apply to any classifier. For example: accuracy,
@@ -117,3 +79,5 @@ Functions for decision tree stuff
 ### random_forest.py
 Functions for random forest stuff
 
+#### Sources
+The dataset is from: http://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data
