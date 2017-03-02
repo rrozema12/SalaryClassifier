@@ -34,7 +34,7 @@ Run this program by entering the following: `python final_project.py > "output_f
 For my project I will be using a dataset corresponding to whether a particular
 person makes more than 50k a year based on particular qualities.
 
-Some of the attributes that I will be using are described below.
+Some of the attributes that I will be using are described below.  
 1. **Age**   
     > The current age of each person when the data was collected.   
 
