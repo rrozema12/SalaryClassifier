@@ -16,6 +16,20 @@ Run this program by entering the following: `python final_project.py > "output_f
     for.  Until I find a solution, the "prettiest" way to see the output is if you
     direct the output to a file.
 
+### Requirements - Download and Install:
+1. numpy
+    ```
+    pip install numpy
+    ```
+2. matplotlib
+    ```
+    pip install matplotlib
+    ```
+3. tabulate
+    ```
+    pip install tabulate
+    ```
+
 ## Details about the Sample Dataset
 For my project I will be using a dataset corresponding to whether a particular
 person makes more than 50k a year based on particular qualities.
