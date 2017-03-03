@@ -1,6 +1,6 @@
 # Classification Algorithims on CSV Datasets
 
-## Informal Description of the Goal and how to Execute
+## Description of the Goal and how to Execute
 The goal of the project is to develop and evaluation classifiers for a dataset.
 
 Given a new person with some of the attributes from the table, I will be
