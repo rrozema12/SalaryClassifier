@@ -6,7 +6,7 @@ The goal of the project is to develop and evaluation classifiers for a dataset.
 Given a new person with some of the attributes from the table, I will be
 predicting whether that person will make more or less than 50k per year.
 
-Run this program by entering the following: `python final_project.py > "output_file_name"`
+Run this program by entering the following: `python final_project.py > ../output/output_file_name`
   - This will generate an output file with all of the classifier information in a file name
     of your choosing.
   - The visualization part of this project can be found in the graphs folder once the
@@ -31,10 +31,10 @@ Run this program by entering the following: `python final_project.py > "output_f
     ```
 
 ## Details about the Sample Dataset
-For my project I will be using a dataset corresponding to whether a particular person makes more than 50k a year based on particular qualities.  See the description of the attributes I used for prediction below.
+For my project I will be using a dataset with 20,000 instances that will help predict whether a particular person makes more than 50k a year based on particular qualities. The descriptions of these attributes are defined below.
 
-1. **Age**     
-    > The current age of each person when the data was collected.    
+1. **Age**   
+    > The current age of each person when the data was collected.   
 
 2. **Degree**   
     > The highest level of education that each person had when the data was collected. This can be High School, Bachelors, Masters, Doctorate, College Drop Out, Associate, Middle School, Elementary, or Professional School.  
