@@ -6,7 +6,7 @@ import file_system
 import clean
 import naive_bayes as bayes
 import table_utils
-import hw4_util as homework
+import partition_util as homework
 import constants
 import analysis
 import diagram
@@ -15,7 +15,7 @@ import partition
 from partition import holdout
 import output_util as output
 import classifier_util
-import hw4_util
+import partition_util
 import knn
 import util
 import decision_tree
@@ -61,7 +61,7 @@ def map_columns_table(table):
 def _printConfusionMatrix(labels, name):
     """ Prints a confusion matrix for given labels """
     output.printHeader('Confusion Matrix')
-    hw4_util.print_confusion_matrix(labels, name)
+    partition_util.print_confusion_matrix(labels, name)
 
 """
  Function that does all of the data visualization. In the case of this
@@ -132,12 +132,12 @@ def knn_and_naive(table):
     # KNN
     output.printHeader('K-Nearest Neighbors')
 
-    labels = hw4_util.random_subsample_knn(table, 5, 10, constants.INDICES['salary'])
+    labels = partition_util.random_subsample_knn(table, 5, 10, constants.INDICES['salary'])
     accuracy = classifier_util.accuracy(labels)
     print('\tRandom Subsample')
     print('\t\tAccuracy = ' + str(accuracy) + ', error rate = ' + str(1 - accuracy))
 
-    labels = hw4_util.stratified_cross_fold_knn(table, 5, 10, constants.INDICES['salary'])
+    labels = partition_util.stratified_cross_fold_knn(table, 5, 10, constants.INDICES['salary'])
 
     accuracy = classifier_util.accuracy(labels)
     accuracy_values.append(accuracy)
@@ -151,13 +151,13 @@ def knn_and_naive(table):
     test_by_names = ['degree', 'ethnicity', 'gender']
 
     accuracy = classifier_util.accuracy(
-        hw4_util.random_subsample_naive_bayes(table, 10, constants.INDICES['salary'],
+        partition_util.random_subsample_naive_bayes(table, 10, constants.INDICES['salary'],
                                               test_by_names))
 
     print('\tRandom Subsample')
     print('\t\tAccuracy = ' + str(accuracy) + ', error rate = ' + str(1 - accuracy))
 
-    labels = hw4_util.stratified_cross_fold_naive_bayes(table, 10, constants.INDICES['salary'],
+    labels = partition_util.stratified_cross_fold_naive_bayes(table, 10, constants.INDICES['salary'],
                                                         test_by_names)
     accuracy = classifier_util.accuracy(labels)
     accuracy_values.append(accuracy)
@@ -232,9 +232,9 @@ def randomforest(table, n, m, f):
 
 def main():
     # Data preprocessing
-    newTable = file_system.loadTable("../datasets/incomeFull.csv")
+    newTable = file_system.loadTable("../datasets/income.csv")
     removedRowsTable = clean.removeNA(newTable)
-    incomeDataFullNoNA = file_system.write(removedRowsTable, "../datasets/incomeFullNoNA.csv")
+    incomeDataFullNoNA = file_system.write(removedRowsTable, "../datasets/incomeNoNA.csv")
     output.printHeader('Rows with NAs have been removed.')
 
     # Data visualization

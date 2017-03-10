@@ -6,7 +6,9 @@ The goal of the project is to develop and evaluation classifiers for a dataset.
 Given a new person with some of the attributes from the table, I will be
 predicting whether that person will make more or less than 50k per year.
 
-Run this program by entering the following: `python final_project.py > ../output/output_file_name`
+This dataset has a little more than 7,000 instances and has seven attributes.
+
+Run this program by entering the following: `python classify.py > ../output/output_file_name`
   - This will generate an output file with all of the classifier information in a file name
     of your choosing.
   - The visualization part of this project can be found in the graphs folder once the
@@ -21,7 +23,7 @@ Run this program by entering the following: `python final_project.py > ../output
     ```
     pip install numpy
     ```
-2. matplotlib  
+2. matplotlib
     ```
     pip install matplotlib
     ```
@@ -96,11 +98,11 @@ Functions for random forest stuff
 ===========================================
 Rows with NAs have been removed.
 ===========================================
- 
+
 ===========================================
 Data visualization complete.
 ===========================================
- 
+
 ===========================================
 K-Nearest Neighbors
 ===========================================
@@ -108,7 +110,7 @@ K-Nearest Neighbors
 		Accuracy = 0.784615384615, error rate = 0.215384615385
 	Stratified Cross Folds (5)
 		Accuracy = 0.8, error rate = 0.2
- 
+
 ===========================================
 Confusion Matrix
 ===========================================
@@ -118,7 +120,7 @@ Confusion Matrix
        1    0    8        8                  0
        0    0   32       32                100
 ========  ===  ===  =======  =================
- 
+
 ===========================================
 Naive Bayes
 ===========================================
@@ -126,7 +128,7 @@ Naive Bayes
 		Accuracy = 0.757692307692, error rate = 0.242307692308
 	Stratified CrossFolding
 		Accuracy = 0.8, error rate = 0.2
- 
+
 ===========================================
 Confusion Matrix
 ===========================================
@@ -136,7 +138,7 @@ Confusion Matrix
        1    2    6        8              25
        0    2   30       32              93.75
 ========  ===  ===  =======  =================
- 
+
 ===========================================
 Decision Tree
 ===========================================
@@ -153,7 +155,7 @@ Stratified CrossFolding
 	Accuracy = 0.825, error rate = 0.175
 
 
- 
+
 ===========================================
 Confusion Matrix
 ===========================================
@@ -163,13 +165,13 @@ Confusion Matrix
        1    2    6        8             25
        0    1   31       32             96.875
 ========  ===  ===  =======  =================
- 
+
 ===========================================
 Random Forest
 ===========================================
 N = 3000 M = 215 F = 2
 	Accuracy = 0.8
- 
+
 ===========================================
 Confusion Matrix
 ===========================================
