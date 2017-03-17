@@ -6,7 +6,8 @@ import numpy
 import table_utils
 
 def _split(labels):
-    """ Divides up the labels by their actual label
+    """
+    Divides up the labels by their actual label
     returns a dictionary of labels
     """
     groups = {}

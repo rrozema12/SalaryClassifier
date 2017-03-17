@@ -210,7 +210,7 @@ def decisiontree(table):
  Function that does all of the decision tree calculations and confusion matrix
  for Random Forests
 
- Parameters: income dataset
+ Parameters: dataset
              number of trees to be generated
              number of trees to uses
              number of elements in random subsets
@@ -249,9 +249,9 @@ def main():
     table = file_system.loadTable('../datasets/incomeFullNoNA.csv')
     decisiontree(table)
 
-    #Random Forest classifier
+    # Random Forest classifier
     table = file_system.loadTable('../datasets/incomeFullNoNA.csv')
-    randomforest(table, 3000, 215, 2)
+    randomforest(table, 3000, 215, 2) #N, M, and F vals
 
 if __name__ == '__main__':
     main()

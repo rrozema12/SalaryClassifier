@@ -4,8 +4,8 @@
 import util
 import collections
 
-# Returns an Ordered Dictionary of frequency
 def frequency(col):
+    """ Returns an Ordered Dictionary of frequency """
     data = collections.OrderedDict()
     col = sorted(col)
 
@@ -16,8 +16,9 @@ def frequency(col):
             data[el] += 1 #Add to the count
     return data
 
-# Sets cutoffs for the frequencies
+
 def frequencies_for_cutoffs(col, cutoffs):
+    """ Sets cutoffs for the frequencies """
     # Sets each frequency to 0 by default
     freqs = [0] * len(cutoffs)
 
