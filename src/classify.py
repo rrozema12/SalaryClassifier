@@ -72,7 +72,7 @@ def _printConfusionMatrix(labels, name):
  Return: matplotlib graphs of selected columns of the dataset.
 """
 def data_vis():
-    table = file_system.loadTable('../datasets/incomeFullNoNA.csv')
+    table = file_system.loadTable('../datasets/incomeNoNA.csv')
 
     col = util.getCol(table, INDICES['degree'])
     freqDict = analysis.frequency(col)
@@ -242,15 +242,15 @@ def main():
     output.printHeader('Data visualization complete.')
 
     # KNN and Naive Bayes classifiers
-    table = file_system.loadTable('../datasets/incomeFullNoNA.csv')
+    table = file_system.loadTable('../datasets/incomeNoNA.csv')
     knn_and_naive(table)
 
     # Decision Tree classifier
-    table = file_system.loadTable('../datasets/incomeFullNoNA.csv')
+    table = file_system.loadTable('../datasets/incomeNoNA.csv')
     decisiontree(table)
 
     # Random Forest classifier
-    table = file_system.loadTable('../datasets/incomeFullNoNA.csv')
+    table = file_system.loadTable('../datasets/incomeNoNA.csv')
     randomforest(table, 3000, 215, 2) #N, M, and F vals
 
 if __name__ == '__main__':
